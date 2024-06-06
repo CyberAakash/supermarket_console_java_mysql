@@ -38,7 +38,8 @@ public class CategoryDAO {
             System.out.println("1. Add Category");
             System.out.println("2. Update Category");
             System.out.println("3. Remove Category");
-            System.out.println("4. Back");
+            System.out.println("4. List Categories");
+            System.out.println("5. Back");
             System.out.print("Enter choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // consume newline
@@ -54,6 +55,9 @@ public class CategoryDAO {
                     removeCategory(scanner, connection);
                     break;
                 case 4:
+                    listCategories(connection);
+                    break;
+                case 5:
                     return;
                 default:
                     System.out.println("Invalid choice. Try again.");
@@ -108,6 +112,22 @@ public class CategoryDAO {
             deleteCategoryStmt.executeUpdate();
 
             System.out.println("Category removed successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void listCategories(Connection connection) {
+        try {
+            String query = "SELECT categoryId, categoryName FROM Categories";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                System.out.println("Category ID: " + rs.getInt("categoryId"));
+                System.out.println("Category Name: " + rs.getString("categoryName"));
+                System.out.println("-------------------------------");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

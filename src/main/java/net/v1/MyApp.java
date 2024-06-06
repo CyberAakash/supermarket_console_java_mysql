@@ -11,7 +11,8 @@ public class MyApp {
 
         Scanner scanner = new Scanner(System.in);
 
-        // Initialize the admin user
+        // Initialize user types and admin user
+        UserTypeDAO.initializeUserTypes(connection);
         UserDAO.initializeAdminUser(connection);
 
         // Use the connection to execute SQL queries and interact with the database
@@ -19,7 +20,8 @@ public class MyApp {
             while (true) {
                 System.out.println("1. Admin Login");
                 System.out.println("2. User Login");
-                System.out.println("3. Exit");
+                System.out.println("3. User Register");
+                System.out.println("4. Exit");
                 System.out.print("Enter choice: ");
                 int choice = scanner.nextInt();
                 scanner.nextLine(); // consume newline
@@ -37,6 +39,9 @@ public class MyApp {
                         }
                         break;
                     case 3:
+                        RegisterDAO.registerUser(scanner, connection);
+                        break;
+                    case 4:
                         connection.close();
                         System.out.println("Goodbye!");
                         System.exit(0);

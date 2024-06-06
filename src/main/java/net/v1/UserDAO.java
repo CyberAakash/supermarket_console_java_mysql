@@ -61,7 +61,8 @@ public class UserDAO {
             System.out.println("1. Add User");
             System.out.println("2. Update User");
             System.out.println("3. Remove User");
-            System.out.println("4. Back");
+            System.out.println("4. List Users");
+            System.out.println("5. Back");
             System.out.print("Enter choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // consume newline
@@ -77,6 +78,9 @@ public class UserDAO {
                     removeUser(scanner, connection);
                     break;
                 case 4:
+                    listUsers(connection);
+                    break;
+                case 5:
                     return;
                 default:
                     System.out.println("Invalid choice. Try again.");
@@ -167,6 +171,24 @@ public class UserDAO {
             deleteUserStmt.executeUpdate();
 
             System.out.println("User removed successfully.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void listUsers(Connection connection) {
+        try {
+            String query = "SELECT u.userId, u.firstName, u.phoneNo, ut.type FROM Users u JOIN UserTypes ut ON u.typeId = ut.typeId";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                System.out.println("User ID: " + rs.getInt("userId"));
+                System.out.println("First Name: " + rs.getString("firstName"));
+                System.out.println("Phone No: " + rs.getString("phoneNo"));
+                System.out.println("Type: " + rs.getString("type"));
+                System.out.println("-------------------------------");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
