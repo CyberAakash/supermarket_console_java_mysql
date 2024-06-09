@@ -3,10 +3,10 @@ package net.v1;
 import java.sql.Connection;
 import java.util.Scanner;
 
-public class UserMenu {
+public class EmployeeMenu {
     public static void display(Scanner scanner, Connection connection, int userId) {
         while (true) {
-            System.out.println("User Menu");
+            System.out.println("Employee Menu");
             System.out.println("1. View Products");
             System.out.println("2. Buy Products");
             System.out.println("3. View Order History");

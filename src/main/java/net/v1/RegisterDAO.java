@@ -15,9 +15,8 @@ public class RegisterDAO {
             String phoneNo = scanner.nextLine();
             System.out.print("Enter password: ");
             String password = scanner.nextLine();
-//            System.out.print("Enter user type (customer/employee): ");
-//            String userType = scanner.nextLine();
-            String userType = "customer";
+            System.out.print("Enter user type (customer/employee): ");
+            String userType = scanner.nextLine();
 
             // Get the user type ID
             int userTypeId = getUserTypeId(connection, userType);

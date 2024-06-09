@@ -7,14 +7,46 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class OrderDAO {
+    public static void manageOrders(Scanner scanner, Connection connection, int userId) {
+        while (true) {
+            System.out.println("Manage Orders");
+            System.out.println("1. Buy Products");
+            System.out.println("2. View Order History");
+            System.out.println("3. Back");
+            System.out.print("Enter choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // consume newline
+
+            switch (choice) {
+                case 1:
+                    buyProducts(scanner, connection, userId);
+                    break;
+                case 2:
+                    viewOrderHistory(connection, userId);
+                    break;
+                case 3:
+                    return;
+                default:
+                    System.out.println("Invalid choice. Try again.");
+            }
+        }
+    }
+
     public static void buyProducts(Scanner scanner, Connection connection, int userId) {
         try {
             System.out.print("Enter product ID to buy: ");
             int productId = scanner.nextInt();
             System.out.print("Enter quantity: ");
             int quantity = scanner.nextInt();
+            scanner.nextLine(); // consume newline
 
-            String productQuery = "SELECT price FROM Products WHERE productId = ?";
+            // Check if the product is in stock
+            if (!StockDAO.checkStock(productId, quantity, connection)) {
+                System.out.println("Out of stock.");
+                return;
+            }
+
+            String productQuery = "SELECT price FROM Stock WHERE productId = ?";
             PreparedStatement productStmt = connection.prepareStatement(productQuery);
             productStmt.setInt(1, productId);
             ResultSet productRs = productStmt.executeQuery();
@@ -62,6 +94,9 @@ public class OrderDAO {
                 orderItemStmt.setInt(4, quantity);
                 orderItemStmt.executeUpdate();
 
+                // Update stock
+                StockDAO.updateStockQuantity(productId, quantity, connection);
+
                 System.out.println("Product bought successfully. Total price: " + totalPrice);
             } else {
                 System.out.println("Product not found.");
@@ -91,3 +126,4 @@ public class OrderDAO {
         }
     }
 }
+
