@@ -11,7 +11,9 @@ public class MyApp {
 
         Scanner scanner = new Scanner(System.in);
 
-        // Initialize user types and admin user
+        CategoryDAO.initializeCategories(connection);
+        ProductDAO.initializeProducts(connection);
+        StockDAO.initializeStocks(connection);
         UserTypeDAO.initializeUserTypes(connection);
         UserDAO.initializeAdminUser(connection);
 
@@ -19,9 +21,10 @@ public class MyApp {
         try {
             while (true) {
                 System.out.println("1. Admin Login");
-                System.out.println("2. User Login");
-                System.out.println("3. User Register");
-                System.out.println("4. Exit");
+                System.out.println("2. Employee Login");
+                System.out.println("3. Employee Register");
+                System.out.println("4. Customer Dashboard");
+                System.out.println("5. Exit");
                 System.out.print("Enter choice: ");
                 int choice = scanner.nextInt();
                 scanner.nextLine(); // consume newline
@@ -35,13 +38,16 @@ public class MyApp {
                     case 2:
                         int userId = Login.userLogin(scanner, connection);
                         if (userId != -1) {
-                            UserMenu.display(scanner, connection, userId);
+                            EmployeeMenu.display(scanner, connection, userId);
                         }
                         break;
                     case 3:
                         RegisterDAO.registerUser(scanner, connection);
                         break;
                     case 4:
+                        CustomerDashboard.display(scanner, connection);
+                        break;
+                    case 5:
                         connection.close();
                         System.out.println("Goodbye!");
                         System.exit(0);

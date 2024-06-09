@@ -10,11 +10,11 @@ public class CategoryDAO {
     public static void initializeCategories(Connection connection) {
         try {
             // Check if categories already exist
-            String checkCategoryQuery = "SELECT * FROM Categories";
+            String checkCategoryQuery = "SELECT COUNT(*) AS count FROM Categories";
             PreparedStatement checkCategoryStmt = connection.prepareStatement(checkCategoryQuery);
             ResultSet rs = checkCategoryStmt.executeQuery();
 
-            if (!rs.next()) {
+            if (rs.next() && rs.getInt("count") == 0) {
                 // Insert default categories
                 String[] defaultCategories = {"Fruits", "Vegetables", "Dairy", "Beverages", "Snacks"};
                 String insertCategoryQuery = "INSERT INTO Categories (categoryName) VALUES (?)";
@@ -105,6 +105,7 @@ public class CategoryDAO {
         try {
             System.out.print("Enter category ID to remove: ");
             int categoryId = scanner.nextInt();
+            scanner.nextLine(); // consume newline
 
             String deleteCategoryQuery = "DELETE FROM Categories WHERE categoryId = ?";
             PreparedStatement deleteCategoryStmt = connection.prepareStatement(deleteCategoryQuery);

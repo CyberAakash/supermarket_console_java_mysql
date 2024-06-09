@@ -10,8 +10,9 @@ public class AdminMenu {
             System.out.println("1. Manage Users");
             System.out.println("2. Manage Categories");
             System.out.println("3. Manage Products");
-            System.out.println("4. Manage User Types");
-            System.out.println("5. Logout");
+            System.out.println("4. Manage Stocks");
+            System.out.println("5. Manage User Types");
+            System.out.println("6. Logout");
             System.out.print("Enter choice: ");
             int choice = scanner.nextInt();
             scanner.nextLine(); // consume newline
@@ -27,9 +28,12 @@ public class AdminMenu {
                     ProductDAO.manageProducts(scanner, connection);
                     break;
                 case 4:
-                    UserTypeDAO.manageUserTypes(scanner, connection);
+                    StockDAO.manageStocks(scanner,connection);
                     break;
                 case 5:
+                    UserTypeDAO.manageUserTypes(scanner, connection);
+                    break;
+                case 6:
                     System.out.println("Logging out...");
                     return;
                 default:
